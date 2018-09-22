@@ -15,10 +15,11 @@ namespace DataBaseDemo
         public Form1()
         {
             InitializeComponent();
-        }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
+
+            dataGridView1["productNameColumn1", 0].Value = "Cheetos";
+            dataGridView1["priceProductColumn3", 0].Value = 3;
+            dataGridView1["quantityProductColumn2", 0].Value = 2;
 
         }
     }
