@@ -117,12 +117,14 @@
       <LastGenOutput>CustomerOrdersEntities.cs</LastGenOutput>
     </Content>
     <Content Include="CustomerOrders_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>CustomerOrders.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="CustomerOrdersEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CustomerOrdersEntities.Designer.cs</LastGenOutput>

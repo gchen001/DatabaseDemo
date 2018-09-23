@@ -33,7 +33,6 @@
             this.birthdayLabel = new System.Windows.Forms.Label();
             this.firstNameTextBox = new System.Windows.Forms.TextBox();
             this.lastNameTextBox = new System.Windows.Forms.TextBox();
-            this.birthdayTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.quantityProductLabel = new System.Windows.Forms.Label();
             this.productNameLabel = new System.Windows.Forms.Label();
@@ -51,6 +50,7 @@
             this.quantityProductColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceProductColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.birthDateDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.customerListBox1 = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -88,6 +88,7 @@
             this.firstNameTextBox.Name = "firstNameTextBox";
             this.firstNameTextBox.Size = new System.Drawing.Size(208, 29);
             this.firstNameTextBox.TabIndex = 1;
+            this.firstNameTextBox.TextChanged += new System.EventHandler(this.firstNameTextBox_TextChanged);
             // 
             // lastNameTextBox
             // 
@@ -95,13 +96,7 @@
             this.lastNameTextBox.Name = "lastNameTextBox";
             this.lastNameTextBox.Size = new System.Drawing.Size(208, 29);
             this.lastNameTextBox.TabIndex = 1;
-            // 
-            // birthdayTextBox
-            // 
-            this.birthdayTextBox.Location = new System.Drawing.Point(469, 58);
-            this.birthdayTextBox.Name = "birthdayTextBox";
-            this.birthdayTextBox.Size = new System.Drawing.Size(208, 29);
-            this.birthdayTextBox.TabIndex = 1;
+            this.lastNameTextBox.TextChanged += new System.EventHandler(this.lastNameTextBox_TextChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -109,7 +104,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.38136F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.61864F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 169F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 171F));
             this.tableLayoutPanel1.Controls.Add(this.quantityProductLabel, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.productNameLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.productNameTextBox, 0, 1);
@@ -130,10 +125,10 @@
             this.quantityProductLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.quantityProductLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.quantityProductLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.quantityProductLabel.Location = new System.Drawing.Point(285, 3);
+            this.quantityProductLabel.Location = new System.Drawing.Point(284, 3);
             this.quantityProductLabel.Margin = new System.Windows.Forms.Padding(2);
             this.quantityProductLabel.Name = "quantityProductLabel";
-            this.quantityProductLabel.Size = new System.Drawing.Size(181, 26);
+            this.quantityProductLabel.Size = new System.Drawing.Size(180, 26);
             this.quantityProductLabel.TabIndex = 1;
             this.quantityProductLabel.Text = "Ilość:";
             this.quantityProductLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -147,7 +142,7 @@
             this.productNameLabel.Location = new System.Drawing.Point(3, 3);
             this.productNameLabel.Margin = new System.Windows.Forms.Padding(2);
             this.productNameLabel.Name = "productNameLabel";
-            this.productNameLabel.Size = new System.Drawing.Size(277, 26);
+            this.productNameLabel.Size = new System.Drawing.Size(276, 26);
             this.productNameLabel.TabIndex = 0;
             this.productNameLabel.Text = "Nazwa produktu:";
             this.productNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -157,7 +152,7 @@
             this.productNameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.productNameTextBox.Location = new System.Drawing.Point(4, 35);
             this.productNameTextBox.Name = "productNameTextBox";
-            this.productNameTextBox.Size = new System.Drawing.Size(275, 29);
+            this.productNameTextBox.Size = new System.Drawing.Size(274, 29);
             this.productNameTextBox.TabIndex = 3;
             // 
             // priceProductLabel
@@ -167,10 +162,10 @@
             this.priceProductLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.priceProductLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.priceProductLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.priceProductLabel.Location = new System.Drawing.Point(471, 3);
+            this.priceProductLabel.Location = new System.Drawing.Point(469, 3);
             this.priceProductLabel.Margin = new System.Windows.Forms.Padding(2);
             this.priceProductLabel.Name = "priceProductLabel";
-            this.priceProductLabel.Size = new System.Drawing.Size(166, 26);
+            this.priceProductLabel.Size = new System.Drawing.Size(168, 26);
             this.priceProductLabel.TabIndex = 3;
             this.priceProductLabel.Text = "Cena:";
             this.priceProductLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -178,17 +173,17 @@
             // quantityProductTextBox
             // 
             this.quantityProductTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.quantityProductTextBox.Location = new System.Drawing.Point(286, 35);
+            this.quantityProductTextBox.Location = new System.Drawing.Point(285, 35);
             this.quantityProductTextBox.Name = "quantityProductTextBox";
-            this.quantityProductTextBox.Size = new System.Drawing.Size(179, 29);
+            this.quantityProductTextBox.Size = new System.Drawing.Size(178, 29);
             this.quantityProductTextBox.TabIndex = 4;
             // 
             // priceProductTextBox
             // 
             this.priceProductTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.priceProductTextBox.Location = new System.Drawing.Point(472, 35);
+            this.priceProductTextBox.Location = new System.Drawing.Point(470, 35);
             this.priceProductTextBox.Name = "priceProductTextBox";
-            this.priceProductTextBox.Size = new System.Drawing.Size(164, 29);
+            this.priceProductTextBox.Size = new System.Drawing.Size(166, 29);
             this.priceProductTextBox.TabIndex = 4;
             // 
             // addProductButton
@@ -289,12 +284,24 @@
             this.birthDateDateTimePicker.Name = "birthDateDateTimePicker";
             this.birthDateDateTimePicker.Size = new System.Drawing.Size(135, 29);
             this.birthDateDateTimePicker.TabIndex = 5;
+            this.birthDateDateTimePicker.Value = new System.DateTime(2018, 9, 22, 0, 0, 0, 0);
+            this.birthDateDateTimePicker.ValueChanged += new System.EventHandler(this.birthDateDateTimePicker_ValueChanged);
+            // 
+            // customerListBox1
+            // 
+            this.customerListBox1.FormattingEnabled = true;
+            this.customerListBox1.ItemHeight = 24;
+            this.customerListBox1.Location = new System.Drawing.Point(442, 18);
+            this.customerListBox1.Name = "customerListBox1";
+            this.customerListBox1.Size = new System.Drawing.Size(305, 124);
+            this.customerListBox1.TabIndex = 6;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 594);
+            this.Controls.Add(this.customerListBox1);
             this.Controls.Add(this.birthDateDateTimePicker);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.saveToXMLButton);
@@ -303,7 +310,6 @@
             this.Controls.Add(this.deleteProductButton);
             this.Controls.Add(this.addProductButton);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.birthdayTextBox);
             this.Controls.Add(this.lastNameTextBox);
             this.Controls.Add(this.firstNameTextBox);
             this.Controls.Add(this.birthdayLabel);
@@ -313,6 +319,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -328,7 +335,6 @@
         private System.Windows.Forms.Label birthdayLabel;
         private System.Windows.Forms.TextBox firstNameTextBox;
         private System.Windows.Forms.TextBox lastNameTextBox;
-        private System.Windows.Forms.TextBox birthdayTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label productNameLabel;
         private System.Windows.Forms.Label quantityProductLabel;
@@ -346,6 +352,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn quantityProductColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn priceProductColumn3;
         private System.Windows.Forms.DateTimePicker birthDateDateTimePicker;
+        private System.Windows.Forms.ListBox customerListBox1;
     }
 }
 

@@ -29,17 +29,11 @@ namespace DataBaseHelper
                 string lastName = (string)clientData[1];
                 DateTime birthDate = Convert.ToDateTime(clientData[2]);
 
-
                 var clientID = context.Customer.
                     Where(x => x.FirstName == firstName && x.LastName == lastName && x.BirthDate == birthDate).
                     Select(y => y.CustomerID).
                     First();
-                //var clientID = (from item
-                //               in context.Customer
-                //               where item.FirstName == (string)clientData[0] && item.LastName == (string)clientData[1] && item.BirthDate == (DateTime)clientData[2]
-                //               select item.CustomerID).Single();
-
-                //productParameters.Rows
+             
                 foreach (DataGridViewRow item in productParameters.Rows)
                 {
                     object Cell1 = item.Cells[0].Value;
@@ -53,23 +47,35 @@ namespace DataBaseHelper
                         Quantity = Convert.ToInt32(Cell2),
                         Price = Convert.ToSingle(Cell3),
                         ClientID = clientID
-                        //ClientID = Convert.ToInt32(clientID)
-                        //ProductName = item.Cells[0].Value.ToString(),
-                        //Quantity = (int?)item.Cells[1].Value,
-                        //Price = (float?)item.Cells[2].Value,
-                        ////ClientID = Convert.ToInt32(clientID)
                     });
                 }
 
                 context.SaveChanges();
             }
 
-            //ProductName = Convert.ToString(item.Cells["productNameColumn1"].Value),
-            //            Quantity = Convert.ToInt32(item.Cells["quantityProductColumn2"].Value),
-            //            Price = Convert.ToSingle(item.Cells["priceProductColumn3"].Value),
-            //            ClientID = Convert.ToInt32(clientID)
+     
 
 
+        }
+
+        public static List<Customer> GetCollectionOfCustomers()
+        {
+            using (var context = new CustomerOrdersEntities())
+            {
+                var customerCollection = context.Customer.ToList();
+
+                return customerCollection;
+            }
+        }
+
+        public static List<Orders> GetCollectionOfOrders()
+        {
+            using (var context = new CustomerOrdersEntities())
+            {
+                var ordersCollection = context.Orders.ToList();
+
+                return ordersCollection;
+            }
         }
     }
 }

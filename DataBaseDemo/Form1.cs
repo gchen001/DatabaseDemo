@@ -11,6 +11,7 @@ using DataBaseDemo.LibraryHelper;
 using DataBaseHelper;
 
 
+
 namespace DataBaseDemo
 {
     public partial class Form1 : Form
@@ -50,9 +51,30 @@ namespace DataBaseDemo
 
         private void saveToDatabaseButton_Click(object sender, EventArgs e)
         {
-            object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, birthDateDateTimePicker.Text };
+            object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, Convert.ToString(birthDateDateTimePicker.Value.Date) };
             DataBaseService.AddingContentToDataBase(customerData, dataGridView1);
             
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            CustomerCollection.UpdateCollections(DataBaseService.GetCollectionOfCustomers(), DataBaseService.GetCollectionOfOrders());
+            CustomerCollection.UpdateListBox(customerListBox1);
+        }
+
+        private void firstNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void lastNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void birthDateDateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

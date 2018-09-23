@@ -22,4 +22,5 @@ namespace DataBaseHelper
     
         public virtual Customer Customer { get; set; }
     }
+    
 }
