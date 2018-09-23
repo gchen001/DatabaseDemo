@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DataBaseDemo.LibraryHelper;
+using DataBaseHelper;
+
 
 namespace DataBaseDemo
 {
@@ -15,12 +18,41 @@ namespace DataBaseDemo
         public Form1()
         {
             InitializeComponent();
+        }
 
 
-            dataGridView1["productNameColumn1", 0].Value = "Cheetos";
-            dataGridView1["priceProductColumn3", 0].Value = 3;
-            dataGridView1["quantityProductColumn2", 0].Value = 2;
+        private void addProductButton_Click(object sender, EventArgs e)
+        {
+            string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
+            DataManager.AddProduct(dataGridView1, productInfo);
+        }
 
+        private void deleteProductButton_Click(object sender, EventArgs e)
+        {
+            DataManager.DeleteSelectedProduct(dataGridView1);
+        }
+
+        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataManager.SetIndex(e.RowIndex);
+        }
+
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataManager.SetIndex(e.RowIndex);
+        }
+
+        private void changeProductButton_Click(object sender, EventArgs e)
+        {
+            string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
+            DataManager.ChangeSelectedProduct(dataGridView1, productInfo);
+        }
+
+        private void saveToDatabaseButton_Click(object sender, EventArgs e)
+        {
+            object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, birthDateDateTimePicker.Text };
+            DataBaseService.AddingContentToDataBase(customerData, dataGridView1);
+            
         }
     }
 }
