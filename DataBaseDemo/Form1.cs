@@ -37,7 +37,7 @@ namespace DataBaseDemo
         {
             //string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
             //DataManager.AddProduct(dataGridView1, productInfo);
-            DataManager.AddProductToList(GetProductData());
+            DataManager.AddProductToList(GetProductData(), GetCustomerData());
             DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);
         }
 
@@ -96,6 +96,10 @@ namespace DataBaseDemo
             if(CustomerCollection.CheckForSameCustomer(GetCustomerData()))
             {
                 DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);
+            }
+            else
+            {
+                dataGridView1.Rows.Clear();
             }
         }
     }

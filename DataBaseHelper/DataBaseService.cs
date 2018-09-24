@@ -52,10 +52,12 @@ namespace DataBaseHelper
 
                 context.SaveChanges();
             }
+        }
 
-     
 
-
+        public static void AddingContentToDataBaseFromMyLists(object[] customerData, )
+        {
+            
         }
 
         public static List<Customer> GetCollectionOfCustomers()

@@ -10,8 +10,6 @@ namespace DataBaseDemo.LibraryHelper
 {
     public static class CustomerCollection
     {
-        //public static IList<DataBaseHelper.Customer> customersCollection { get; set; } = new List<Customer>();
-        //public static IList<DataBaseHelper.Orders> ordersCollection { get; set; } = new List<Orders>();
         public static List<MyCustomerClass> customersCollection { get; set; } = new List<MyCustomerClass>();
         public static List<MyOrdersClass> ordersCollection { get; set; } = new List<MyOrdersClass>();
 
@@ -23,13 +21,16 @@ namespace DataBaseDemo.LibraryHelper
                 {
                     firstName = customer.FirstName,
                     lastName = customer.LastName,
-                    birthDate = customer.BirthDate
+                    birthDate = customer.BirthDate,
+                    customerID = customer.CustomerID
+                    
                 });
             }
             foreach (var order in ordersList)
             {
                 ordersCollection.Add(new MyOrdersClass()
                 {
+                    orderID = order.OrderID,
                     productName = order.ProductName,
                     quantity = order.Quantity,
                     price = order.Price,
@@ -47,7 +48,7 @@ namespace DataBaseDemo.LibraryHelper
             {
                 foreach (var customer in customersCollection)
                 {
-                    string temp = customer.FirstName.ToString() + " " + customer.LastName.ToString();
+                    string temp = customer.firstName.ToString() + " " + customer.lastName.ToString() + " " + Convert.ToDateTime(customer.birthDate).ToShortDateString();
                     listBox.Items.Add(temp);
                 }
             }
@@ -62,9 +63,9 @@ namespace DataBaseDemo.LibraryHelper
                 var areThereSameCustomer = customersCollection.
                     Any
                     (
-                    client => client.FirstName == (string)customerData[0]
-                    && client.LastName == (string)customerData[1]
-                    && client.BirthDate == Convert.ToDateTime(customerData[2])
+                    client => client.firstName == (string)customerData[0]
+                    && client.lastName == (string)customerData[1]
+                    && client.birthDate == Convert.ToDateTime(customerData[2])
                     );
 
                 return areThereSameCustomer;
