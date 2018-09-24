@@ -21,11 +21,24 @@ namespace DataBaseDemo
             InitializeComponent();
         }
 
+        public string[] GetProductData()
+        {
+            string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
+            return productInfo;
+        }
+
+        public object[] GetCustomerData()
+        {
+            object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, birthDateDateTimePicker.Value.Date.ToShortDateString() };
+            return customerData;
+        }
 
         private void addProductButton_Click(object sender, EventArgs e)
         {
-            string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
-            DataManager.AddProduct(dataGridView1, productInfo);
+            //string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
+            //DataManager.AddProduct(dataGridView1, productInfo);
+            DataManager.AddProductToList(GetProductData());
+            DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);
         }
 
         private void deleteProductButton_Click(object sender, EventArgs e)
@@ -45,14 +58,14 @@ namespace DataBaseDemo
 
         private void changeProductButton_Click(object sender, EventArgs e)
         {
-            string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
-            DataManager.ChangeSelectedProduct(dataGridView1, productInfo);
+            //string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
+            DataManager.ChangeSelectedProduct(dataGridView1, GetProductData());
         }
 
         private void saveToDatabaseButton_Click(object sender, EventArgs e)
         {
-            object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, Convert.ToString(birthDateDateTimePicker.Value.Date) };
-            DataBaseService.AddingContentToDataBase(customerData, dataGridView1);
+            //object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, Convert.ToString(birthDateDateTimePicker.Value.Date) };
+            DataBaseService.AddingContentToDataBase(GetCustomerData(), dataGridView1);
             
         }
 
@@ -64,17 +77,26 @@ namespace DataBaseDemo
 
         private void firstNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            
+            SameCustomerCheck();  
         }
 
         private void lastNameTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            SameCustomerCheck();
         }
 
         private void birthDateDateTimePicker_ValueChanged(object sender, EventArgs e)
         {
+            SameCustomerCheck();
+        }
 
+        public void SameCustomerCheck()
+        {
+            //object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, birthDateDateTimePicker.Value.Date.ToShortDateString() };
+            if(CustomerCollection.CheckForSameCustomer(GetCustomerData()))
+            {
+                DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);
+            }
         }
     }
 }

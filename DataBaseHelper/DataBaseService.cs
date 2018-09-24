@@ -63,7 +63,6 @@ namespace DataBaseHelper
             using (var context = new CustomerOrdersEntities())
             {
                 var customerCollection = context.Customer.ToList();
-
                 return customerCollection;
             }
         }
@@ -73,7 +72,6 @@ namespace DataBaseHelper
             using (var context = new CustomerOrdersEntities())
             {
                 var ordersCollection = context.Orders.ToList();
-
                 return ordersCollection;
             }
         }
