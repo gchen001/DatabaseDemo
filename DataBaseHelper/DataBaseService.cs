@@ -11,29 +11,18 @@ namespace DataBaseHelper
     {
         public static void AddingContentToDataBase(object[] clientData, DataGridView productParameters)
         {
-            using (var context = new CustomerOrdersEntities())
-            {
-                context.Customer.Add(new Customer()
-                {
-                    FirstName = (string)clientData[0],
-                    LastName = (string)clientData[1],
-                    BirthDate = Convert.ToDateTime(clientData[2])
-                });
+            AddCustomer(clientData);
 
-                context.SaveChanges();
-            }
+            AddOrders(clientData, productParameters);
+
+        }
+
+        private static void AddOrders(object[] clientData, DataGridView productParameters)
+        {
+            int customerID = GetCustomerID(clientData);
 
             using (var context = new CustomerOrdersEntities())
             {
-                string firstName = (string)clientData[0];
-                string lastName = (string)clientData[1];
-                DateTime birthDate = Convert.ToDateTime(clientData[2]);
-
-                var clientID = context.Customer.
-                    Where(x => x.FirstName == firstName && x.LastName == lastName && x.BirthDate == birthDate).
-                    Select(y => y.CustomerID).
-                    First();
-             
                 foreach (DataGridViewRow item in productParameters.Rows)
                 {
                     object Cell1 = item.Cells[0].Value;
@@ -46,7 +35,7 @@ namespace DataBaseHelper
                         ProductName = Cell1.ToString(),
                         Quantity = Convert.ToInt32(Cell2),
                         Price = Convert.ToSingle(Cell3),
-                        ClientID = clientID
+                        ClientID = customerID
                     });
                 }
 
@@ -54,10 +43,49 @@ namespace DataBaseHelper
             }
         }
 
-
-        public static void AddingContentToDataBaseFromMyLists(object[] customerData, )
+        private static int GetCustomerID(object[] clientData)
         {
-            
+            using (var context = new CustomerOrdersEntities())
+            {
+                string firstName = (string)clientData[0];
+                string lastName = (string)clientData[1];
+                DateTime birthDate = Convert.ToDateTime(clientData[2]);
+
+                var clientID = context.Customer.
+                    Where(x => x.FirstName == firstName && x.LastName == lastName && x.BirthDate == birthDate).
+                    Select(y => y.CustomerID).
+                    First();
+                //var id = (from client in context.Customer
+                //          where (client.FirstName == (string)clientData[0] && client.LastName == (string)clientData[1]
+                //                && client.BirthDate == Convert.ToDateTime(clientData[2]))
+                //          select client.CustomerID).Single();
+                return clientID;
+            }
+        }
+
+        private static void AddCustomer(object[] clientData)
+        {
+            using (var context = new CustomerOrdersEntities())
+            {
+                string firstName = (string)clientData[0];
+                string lastName = (string)clientData[1];
+                DateTime birthDate = Convert.ToDateTime(clientData[2]);
+
+                var isSameCustomerInDataBase = context.Customer
+                    .Any(x => x.FirstName == firstName && x.LastName == lastName
+                    && x.BirthDate == birthDate);
+                if (!isSameCustomerInDataBase)
+                {
+                    context.Customer.Add(new Customer()
+                    {
+                        FirstName = (string)clientData[0],
+                        LastName = (string)clientData[1],
+                        BirthDate = Convert.ToDateTime(clientData[2])
+                    });
+
+                    context.SaveChanges();
+                }
+            }
         }
 
         public static List<Customer> GetCollectionOfCustomers()
