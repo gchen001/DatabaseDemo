@@ -78,6 +78,7 @@
     <Compile Include="LibraryHelper\DataManager.cs" />
     <Compile Include="LibraryHelper\MyCustomerClass.cs" />
     <Compile Include="LibraryHelper\MyOrdersClass.cs" />
+    <Compile Include="LibraryHelper\WindowsFormControlHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

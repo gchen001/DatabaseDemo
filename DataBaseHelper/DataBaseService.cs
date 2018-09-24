@@ -34,13 +34,13 @@ namespace DataBaseHelper
                     float price = Convert.ToSingle(Cell3);
 
                     //Check for same Orders if there arent, add new order to database
-                    var isThereSameOrder = context.Orders
+                    var areThereSameOrders = context.Orders
                         .Any(x => x.ProductName == productName &&
                         x.Quantity == quantity &&
                         x.Price == price
                         );
 
-                    if(!isThereSameOrder)
+                    if(!areThereSameOrders)
                     {
                         context.Orders.Add(new Orders()
                         {

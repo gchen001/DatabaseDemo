@@ -36,7 +36,8 @@ namespace DataBaseDemo
         private void addProductButton_Click(object sender, EventArgs e)
         {
             DataManager.AddProductToList(GetProductData(), GetCustomerData(), dataGridView1);
-            
+            WindowsFormControlHelper.UpdateListBox(customerListBox1);
+
         }
 
         private void deleteProductButton_Click(object sender, EventArgs e)
@@ -67,7 +68,7 @@ namespace DataBaseDemo
         private void Form1_Load(object sender, EventArgs e)
         {
             CustomerCollection.UpdateCollections(DataBaseService.GetCollectionOfCustomers(), DataBaseService.GetCollectionOfOrders());
-            CustomerCollection.UpdateListBox(customerListBox1);
+            WindowsFormControlHelper.UpdateListBox(customerListBox1);
         }
 
         private void firstNameTextBox_TextChanged(object sender, EventArgs e)
@@ -87,7 +88,7 @@ namespace DataBaseDemo
 
         public void SameCustomerCheck()
         {
-            if(CustomerCollection.CheckForSameCustomer(GetCustomerData()))
+            if(DataManager.CheckForSameCustomer(GetCustomerData()))
             {
                 DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);
             }
@@ -95,6 +96,22 @@ namespace DataBaseDemo
             {
                 dataGridView1.Rows.Clear();
             }
+        }
+
+        private void saveToXMLButton_Click(object sender, EventArgs e)
+        {
+            DataBaseService.AddingContentToDataBase(GetCustomerData(), dataGridView1);
+
+            CreatingXML.CreateCustomerXML(DataBaseService.GetCollectionOfCustomers());
+            CreatingXML.CreateOrdersXML(DataBaseService.GetCollectionOfOrders());
+        }
+
+        private void customerListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            WindowsFormControlHelper.UpdateTextBoxes
+                (
+                new TextBox[] { firstNameTextBox, lastNameTextBox }, birthDateDateTimePicker, customerListBox1
+                );
         }
     }
 }

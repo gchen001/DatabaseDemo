@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using DataBaseHelper;
 
 namespace DataBaseDemo.LibraryHelper
@@ -40,39 +39,5 @@ namespace DataBaseDemo.LibraryHelper
 
         }
 
-        public static void UpdateListBox(ListBox listBox)
-        {
-            listBox.Items.Clear();
-
-            if (customersCollection != null)
-            {
-                foreach (var customer in customersCollection)
-                {
-                    string temp = customer.firstName.ToString() + " " + customer.lastName.ToString() + " " + Convert.ToDateTime(customer.birthDate).ToShortDateString();
-                    listBox.Items.Add(temp);
-                }
-            }
-
-        }
-
-        public static bool CheckForSameCustomer(object[] customerData)
-        {
-            var data = Convert.ToDateTime(customerData[2]);
-            if (customerData.All(x => x.ToString().Length != 0) && ordersCollection != null)
-            {
-                var areThereSameCustomer = customersCollection.
-                    Any
-                    (
-                    client => client.firstName == (string)customerData[0]
-                    && client.lastName == (string)customerData[1]
-                    && client.birthDate == Convert.ToDateTime(customerData[2])
-                    );
-
-                return areThereSameCustomer;
-            }
-
-            return false;
-
-        }
     }
 }

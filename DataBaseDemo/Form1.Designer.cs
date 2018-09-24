@@ -104,7 +104,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.38136F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.61864F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.tableLayoutPanel1.Controls.Add(this.quantityProductLabel, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.productNameLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.productNameTextBox, 0, 1);
@@ -125,10 +125,10 @@
             this.quantityProductLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.quantityProductLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.quantityProductLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.quantityProductLabel.Location = new System.Drawing.Point(283, 3);
+            this.quantityProductLabel.Location = new System.Drawing.Point(282, 3);
             this.quantityProductLabel.Margin = new System.Windows.Forms.Padding(2);
             this.quantityProductLabel.Name = "quantityProductLabel";
-            this.quantityProductLabel.Size = new System.Drawing.Size(179, 26);
+            this.quantityProductLabel.Size = new System.Drawing.Size(178, 26);
             this.quantityProductLabel.TabIndex = 1;
             this.quantityProductLabel.Text = "Ilość:";
             this.quantityProductLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -142,7 +142,7 @@
             this.productNameLabel.Location = new System.Drawing.Point(3, 3);
             this.productNameLabel.Margin = new System.Windows.Forms.Padding(2);
             this.productNameLabel.Name = "productNameLabel";
-            this.productNameLabel.Size = new System.Drawing.Size(275, 26);
+            this.productNameLabel.Size = new System.Drawing.Size(274, 26);
             this.productNameLabel.TabIndex = 0;
             this.productNameLabel.Text = "Nazwa produktu:";
             this.productNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -152,7 +152,7 @@
             this.productNameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.productNameTextBox.Location = new System.Drawing.Point(4, 35);
             this.productNameTextBox.Name = "productNameTextBox";
-            this.productNameTextBox.Size = new System.Drawing.Size(273, 29);
+            this.productNameTextBox.Size = new System.Drawing.Size(272, 29);
             this.productNameTextBox.TabIndex = 3;
             // 
             // priceProductLabel
@@ -162,10 +162,10 @@
             this.priceProductLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.priceProductLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.priceProductLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.priceProductLabel.Location = new System.Drawing.Point(467, 3);
+            this.priceProductLabel.Location = new System.Drawing.Point(465, 3);
             this.priceProductLabel.Margin = new System.Windows.Forms.Padding(2);
             this.priceProductLabel.Name = "priceProductLabel";
-            this.priceProductLabel.Size = new System.Drawing.Size(170, 26);
+            this.priceProductLabel.Size = new System.Drawing.Size(172, 26);
             this.priceProductLabel.TabIndex = 3;
             this.priceProductLabel.Text = "Cena:";
             this.priceProductLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -173,17 +173,17 @@
             // quantityProductTextBox
             // 
             this.quantityProductTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.quantityProductTextBox.Location = new System.Drawing.Point(284, 35);
+            this.quantityProductTextBox.Location = new System.Drawing.Point(283, 35);
             this.quantityProductTextBox.Name = "quantityProductTextBox";
-            this.quantityProductTextBox.Size = new System.Drawing.Size(177, 29);
+            this.quantityProductTextBox.Size = new System.Drawing.Size(176, 29);
             this.quantityProductTextBox.TabIndex = 4;
             // 
             // priceProductTextBox
             // 
             this.priceProductTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.priceProductTextBox.Location = new System.Drawing.Point(468, 35);
+            this.priceProductTextBox.Location = new System.Drawing.Point(466, 35);
             this.priceProductTextBox.Name = "priceProductTextBox";
-            this.priceProductTextBox.Size = new System.Drawing.Size(168, 29);
+            this.priceProductTextBox.Size = new System.Drawing.Size(170, 29);
             this.priceProductTextBox.TabIndex = 4;
             // 
             // addProductButton
@@ -234,6 +234,7 @@
             this.saveToXMLButton.TabIndex = 3;
             this.saveToXMLButton.Text = "Zapisz do XML";
             this.saveToXMLButton.UseVisualStyleBackColor = true;
+            this.saveToXMLButton.Click += new System.EventHandler(this.saveToXMLButton_Click);
             // 
             // dataGridView1
             // 
@@ -284,8 +285,7 @@
             this.birthDateDateTimePicker.Name = "birthDateDateTimePicker";
             this.birthDateDateTimePicker.Size = new System.Drawing.Size(114, 29);
             this.birthDateDateTimePicker.TabIndex = 5;
-            //this.birthDateDateTimePicker.Value = new System.DateTime(2018, 9, 21, 0, 0, 0, 0);
-            this.birthDateDateTimePicker.Value = new System.DateTime(2018, 9, 21);
+            this.birthDateDateTimePicker.Value = new System.DateTime(2018, 9, 21, 0, 0, 0, 0);
             this.birthDateDateTimePicker.ValueChanged += new System.EventHandler(this.birthDateDateTimePicker_ValueChanged);
             // 
             // customerListBox1
@@ -296,6 +296,7 @@
             this.customerListBox1.Name = "customerListBox1";
             this.customerListBox1.Size = new System.Drawing.Size(305, 124);
             this.customerListBox1.TabIndex = 6;
+            this.customerListBox1.SelectedIndexChanged += new System.EventHandler(this.customerListBox1_SelectedIndexChanged);
             // 
             // Form1
             // 

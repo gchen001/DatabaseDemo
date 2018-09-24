@@ -120,21 +120,9 @@ namespace DataBaseDemo.LibraryHelper
         {
             if (dataGridView.Rows.Count > 0)
             {
-                var productName = (string)dataGridView.Rows[index].Cells[0].Value;
-                var quantity = Convert.ToInt32(dataGridView.Rows[index].Cells[1].Value);
-                var price = Convert.ToSingle(dataGridView.Rows[index].Cells[2].Value);
+                int IndexFromList = GetIndexFromList(dataGridView, customerData);
 
-                string firstName = (string)customerData[0];
-                string lastName = (string)customerData[1];
-                DateTime birthDate = Convert.ToDateTime(customerData[2]);
-
-                //TODO: usuwanie zamowien z listy zamowien dla klientow z bazy danych
-                var getIndexFromList = CustomerCollection.ordersCollection.IndexOf
-                    (CustomerCollection.ordersCollection.Single
-                    (x => x.productName == productName && x.quantity == quantity && x.price == price
-                   && x.customer.firstName == firstName && x.customer.lastName == lastName && x.customer.birthDate == birthDate));
-
-                CustomerCollection.ordersCollection.RemoveAt(getIndexFromList);
+                CustomerCollection.ordersCollection.RemoveAt(IndexFromList);
                 UpdateDataGridView(customerData, dataGridView);
             }
         }
@@ -143,38 +131,48 @@ namespace DataBaseDemo.LibraryHelper
         {
             if (dataGridView.Rows.Count > 0)
             {
-                var productName = (string)dataGridView.Rows[index].Cells[0].Value;
-                var quantity = Convert.ToInt32(dataGridView.Rows[index].Cells[1].Value);
-                var price = Convert.ToSingle(dataGridView.Rows[index].Cells[2].Value);
+                int IndexFromList = GetIndexFromList(dataGridView, customerData);
 
-                string firstName = (string)customerData[0];
-                string lastName = (string)customerData[1];
-                DateTime birthDate = Convert.ToDateTime(customerData[2]);
-
-                //TODO: usuwanie zamowien z listy zamowien dla klientow z bazy danych
-                var getIndexFromList = CustomerCollection.ordersCollection.IndexOf
-                    (CustomerCollection.ordersCollection.Single
-                    (x => x.productName == productName && x.quantity == quantity && x.price == price
-                   && x.customer.firstName == firstName && x.customer.lastName == lastName && x.customer.birthDate == birthDate));
-
-                CustomerCollection.ordersCollection[getIndexFromList].productName = productData[0];
-                CustomerCollection.ordersCollection[getIndexFromList].quantity = Convert.ToInt32(productData[1]);
-                CustomerCollection.ordersCollection[getIndexFromList].price = Convert.ToSingle(productData[2]);
+                CustomerCollection.ordersCollection[IndexFromList].productName = productData[0];
+                CustomerCollection.ordersCollection[IndexFromList].quantity = Convert.ToInt32(productData[1]);
+                CustomerCollection.ordersCollection[IndexFromList].price = Convert.ToSingle(productData[2]);
 
                 UpdateDataGridView(customerData, dataGridView);
             }
         }
-        //public static void DeleteSelectedProduct(DataGridView dataGridView, object[] v)
-        //{
-        //    if (dataGridView.Rows.Count != 0)
-        //        dataGridView.Rows.Remove(dataGridView.Rows[index]);
-        //}
 
-        //public static void ChangeSelectedProduct(DataGridView dataGridView, string[] texts)
-        //{
-        //    if (dataGridView.Rows.Count != 0)
-        //        dataGridView.Rows[index].SetValues(texts);
-        //}
+        private static int GetIndexFromList(DataGridView dataGridView, object[] customerData)
+        {
+            var productName = (string)dataGridView.Rows[index].Cells[0].Value;
+            var quantity = Convert.ToInt32(dataGridView.Rows[index].Cells[1].Value);
+            var price = Convert.ToSingle(dataGridView.Rows[index].Cells[2].Value);
+
+            string firstName = (string)customerData[0];
+            string lastName = (string)customerData[1];
+            DateTime birthDate = Convert.ToDateTime(customerData[2]);
+
+            var getClientID = (from client in CustomerCollection.customersCollection
+                               where (client.firstName == (string)customerData[0] &&
+                               client.lastName == (string)customerData[1] &&
+                               client.birthDate == Convert.ToDateTime(customerData[2]))
+                               select client.customerID).Single();
+
+            var getIndexFromList = CustomerCollection.ordersCollection.IndexOf
+                   (CustomerCollection.ordersCollection.Single
+                   (x =>
+                   (x.productName == productName && x.quantity == quantity && x.price == price) && //selected row
+                        (
+                            (x.customer.firstName == firstName && x.customer.lastName == lastName && x.customer.birthDate == birthDate && x.ClientID == 0) //checking for same customer in CustomerList
+                        ||
+                            (
+                                (x.ClientID != 0 && x.ClientID == getClientID) &&
+                                !(x.customer.firstName == firstName && x.customer.lastName == lastName && x.customer.birthDate == birthDate)) //checking for sam customer from Database
+                        )
+                  ));
+
+            return getIndexFromList;
+        }
+
 
         public static void UpdateDataGridView(object[] customerData, DataGridView dataGridView1)
         {
@@ -202,6 +200,25 @@ namespace DataBaseDemo.LibraryHelper
                 string[] parameters = new string[] { order.productName, order.quantity.ToString(), order.price.ToString() };
                 dataGridView1.Rows.Add(parameters);
             }
+        }
+
+
+        public static bool CheckForSameCustomer(object[] customerData)
+        {
+            //var data = Convert.ToDateTime(customerData[2]);
+            if (customerData.All(x => x.ToString().Length != 0) && CustomerCollection.ordersCollection != null)
+            {
+                var areThereSameCustomer = CustomerCollection.customersCollection.
+                    Any
+                    (
+                    client => client.firstName == (string)customerData[0]
+                    && client.lastName == (string)customerData[1]
+                    && client.birthDate == Convert.ToDateTime(customerData[2])
+                    );
+
+                return areThereSameCustomer;
+            }
+            return false;
         }
     }
 }
