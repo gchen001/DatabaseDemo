@@ -35,15 +35,13 @@ namespace DataBaseDemo
 
         private void addProductButton_Click(object sender, EventArgs e)
         {
-            //string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
-            //DataManager.AddProduct(dataGridView1, productInfo);
-            DataManager.AddProductToList(GetProductData(), GetCustomerData());
-            DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);
+            DataManager.AddProductToList(GetProductData(), GetCustomerData(), dataGridView1);
+            
         }
 
         private void deleteProductButton_Click(object sender, EventArgs e)
         {
-            DataManager.DeleteSelectedProduct(dataGridView1);
+            DataManager.DeleteSelectedProductFromList(dataGridView1, GetCustomerData());
         }
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -58,15 +56,12 @@ namespace DataBaseDemo
 
         private void changeProductButton_Click(object sender, EventArgs e)
         {
-            //string[] productInfo = new string[] { productNameTextBox.Text, quantityProductTextBox.Text, priceProductTextBox.Text };
-            DataManager.ChangeSelectedProduct(dataGridView1, GetProductData());
+            DataManager.ChangeSelectedProductFromList(dataGridView1, GetProductData(), GetCustomerData());
         }
 
         private void saveToDatabaseButton_Click(object sender, EventArgs e)
         {
-            //object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, Convert.ToString(birthDateDateTimePicker.Value.Date) };
-            DataBaseService.AddingContentToDataBase(GetCustomerData(), dataGridView1);
-            
+            DataBaseService.AddingContentToDataBase(GetCustomerData(), dataGridView1);   
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -92,7 +87,6 @@ namespace DataBaseDemo
 
         public void SameCustomerCheck()
         {
-            //object[] customerData = new object[] { firstNameTextBox.Text, lastNameTextBox.Text, birthDateDateTimePicker.Value.Date.ToShortDateString() };
             if(CustomerCollection.CheckForSameCustomer(GetCustomerData()))
             {
                 DataManager.UpdateDataGridView(GetCustomerData(), dataGridView1);

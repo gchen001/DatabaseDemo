@@ -17,109 +17,164 @@ namespace DataBaseDemo.LibraryHelper
             index = value;
         }
 
-        public static void AddProduct(DataGridView dataGridView, string[] texts)
-        {
-            //Func<string, bool> predicate = (text) => text.Length != 0;
-            var checker = texts.All(x => x.Length != 0);
-            if (checker)
-                dataGridView.Rows.Add(texts);
-            else
-                MessageBox.Show("Uzupełnij wszystkie dane produktu");
-        }
-
-        public static void AddProductToList(string[] productData, object[] customerData)
+        public static void AddProductToList(string[] productData, object[] customerData, DataGridView datagridView)
         {
             var areProductDataComplete = productData.All(x => x.Length != 0);
             var areCustomerDataComplete = customerData.All(x => x.ToString().Length != 0);
 
-            if (areProductDataComplete && areCustomerDataComplete)
+            bool areSameOrdersInDataGridAlready = CheckForSameOrdersInDataGrid(productData, datagridView);
+            if (!areSameOrdersInDataGridAlready)
             {
-                //sprawdz czy taki klient juz istnieje
-                var areThereSameCustomer = CustomerCollection.customersCollection.
-                    Any
-                    (
-                    client => client.firstName == (string)customerData[0]
-                    && client.lastName == (string)customerData[1]
-                    && client.birthDate == Convert.ToDateTime(customerData[2])
-                    );
-                //jezeli tak, to zdobadz jego index i dodaj nowy produkt
-                if (areThereSameCustomer)
+                if (areProductDataComplete && areCustomerDataComplete)
                 {
-                    var indexInList = CustomerCollection.customersCollection.IndexOf
+                    //sprawdz czy taki klient juz istnieje
+                    var areThereSameCustomer = CustomerCollection.customersCollection.
+                        Any
                         (
-                        CustomerCollection.customersCollection.
-                        Single(client => client.firstName == (string)customerData[0]
-                    && client.lastName == (string)customerData[1]
-                    && client.birthDate == Convert.ToDateTime(customerData[2]))
+                        client => client.firstName == (string)customerData[0]
+                        && client.lastName == (string)customerData[1]
+                        && client.birthDate == Convert.ToDateTime(customerData[2])
                         );
-                    CustomerCollection.ordersCollection.Add(
-                   new MyOrdersClass()
-                   {
-                       productName = productData[0],
-                       quantity = Convert.ToInt32(productData[1]),
-                       price = Convert.ToSingle(productData[2]),
-                       customer = CustomerCollection.customersCollection[indexInList]
-                   });
-
-                }
-                //jezeli nie, to stworz nowego i dodaj nowy produkt
-                else
-                {
-                    CustomerCollection.customersCollection.Add(new MyCustomerClass()
+                    //jezeli tak, to zdobadz jego index i dodaj nowy produkt
+                    if (areThereSameCustomer)
                     {
-                        firstName = (string)customerData[0],
-                        lastName = (string)customerData[1],
-                        birthDate = Convert.ToDateTime(customerData[2])
-                    });
+                        var indexInList = CustomerCollection.customersCollection.IndexOf
+                            (
+                            CustomerCollection.customersCollection.
+                            Single(client => client.firstName == (string)customerData[0]
+                        && client.lastName == (string)customerData[1]
+                        && client.birthDate == Convert.ToDateTime(customerData[2]))
+                            );
 
-                    CustomerCollection.ordersCollection.Add(
-                   new MyOrdersClass()
-                   {
-                       productName = productData[0],
-                       quantity = Convert.ToInt32(productData[1]),
-                       price = Convert.ToSingle(productData[2]),
-                       customer = CustomerCollection.customersCollection[CustomerCollection.customersCollection.Count - 1]
-                   });
+                        CustomerCollection.ordersCollection.Add(
+                       new MyOrdersClass()
+                       {
+                           productName = productData[0],
+                           quantity = Convert.ToInt32(productData[1]),
+                           price = Convert.ToSingle(productData[2]),
+                           customer = CustomerCollection.customersCollection[indexInList]
+                       });
+
+                        //aktualizowanie danych w tabeli
+                        UpdateDataGridView(customerData, datagridView);
+
+                    }
+                    //jezeli nie, to stworz nowego i dodaj nowy produkt
+                    else
+                    {
+                        CustomerCollection.customersCollection.Add(new MyCustomerClass()
+                        {
+                            firstName = (string)customerData[0],
+                            lastName = (string)customerData[1],
+                            birthDate = Convert.ToDateTime(customerData[2])
+                        });
+
+                        CustomerCollection.ordersCollection.Add(
+                       new MyOrdersClass()
+                       {
+                           productName = productData[0],
+                           quantity = Convert.ToInt32(productData[1]),
+                           price = Convert.ToSingle(productData[2]),
+                           customer = CustomerCollection.customersCollection[CustomerCollection.customersCollection.Count - 1]
+                       });
+
+                        //aktualizowanie danych w tabeli
+                        UpdateDataGridView(customerData, datagridView);
+                    }
                 }
+
+                else
+                    MessageBox.Show("Uzupełnij wszystkie pola");
+            }
+            else
+            {
+                MessageBox.Show("Zamowienie o takich parametrach juz istnieje");
             }
 
+        }
+
+        private static bool CheckForSameOrdersInDataGrid(string[] productData, DataGridView datagridView)
+        {
+            if (datagridView.Rows.Count > 0)
+            {
+                foreach (DataGridViewRow row in datagridView.Rows)
+                {
+                    string nameproduct = row.Cells[0].Value.ToString();
+                    string quantity = row.Cells[1].Value.ToString();
+                    string price = row.Cells[2].Value.ToString();
+
+                    if (nameproduct == productData[0] && quantity == productData[1] && price == productData[2])
+                    {
+                        return true;
+                    }
+                }
+            }
             else
-                MessageBox.Show("Uzupełnij wszystkie pola");
+            {
+                return false;
+            }
+            return false;
         }
 
-        public static void DeleteSelectedProductFromList(DataGridView dataGridView)
+        public static void DeleteSelectedProductFromList(DataGridView dataGridView, object[] customerData)
         {
-            var productName = (string)dataGridView.Rows[index].Cells[0].Value;
-            var quantity = (int)dataGridView.Rows[index].Cells[1].Value;
-            var price = (float)dataGridView.Rows[index].Cells[1].Value;
+            if (dataGridView.Rows.Count > 0)
+            {
+                var productName = (string)dataGridView.Rows[index].Cells[0].Value;
+                var quantity = Convert.ToInt32(dataGridView.Rows[index].Cells[1].Value);
+                var price = Convert.ToSingle(dataGridView.Rows[index].Cells[2].Value);
 
-            //var indexInList = CustomerCollection.ordersCollection.IndexOf
-            //    (
-            //    CustomerCollection.ordersCollection.Single(x => x.ProductName == productName && x.Quantity == quantity && x.Price == price)
-            //    );
-            //if (CustomerCollection.ordersCollection.Count() > 0)
-            //{
-            //    //CustomerCollection.ordersCollection.Remove();
-            //    CustomerCollection.ordersCollection.RemoveAt(indexInList);
-            //}
+                string firstName = (string)customerData[0];
+                string lastName = (string)customerData[1];
+                DateTime birthDate = Convert.ToDateTime(customerData[2]);
+
+                //TODO: usuwanie zamowien z listy zamowien dla klientow z bazy danych
+                var getIndexFromList = CustomerCollection.ordersCollection.IndexOf
+                    (CustomerCollection.ordersCollection.Single
+                    (x => x.productName == productName && x.quantity == quantity && x.price == price
+                   && x.customer.firstName == firstName && x.customer.lastName == lastName && x.customer.birthDate == birthDate));
+
+                CustomerCollection.ordersCollection.RemoveAt(getIndexFromList);
+                UpdateDataGridView(customerData, dataGridView);
+            }
         }
 
-        public static void ChangeSelectedProductFromList(DataGridView dataGridView, string[] texts)
+        public static void ChangeSelectedProductFromList(DataGridView dataGridView, string[] productData, object[] customerData)
         {
-            //CustomerCollection.ordersCollection[index].
-        }
+            if (dataGridView.Rows.Count > 0)
+            {
+                var productName = (string)dataGridView.Rows[index].Cells[0].Value;
+                var quantity = Convert.ToInt32(dataGridView.Rows[index].Cells[1].Value);
+                var price = Convert.ToSingle(dataGridView.Rows[index].Cells[2].Value);
 
-        public static void DeleteSelectedProduct(DataGridView dataGridView)
-        {
-            if (dataGridView.Rows.Count != 0)
-                dataGridView.Rows.Remove(dataGridView.Rows[index]);
-        }
+                string firstName = (string)customerData[0];
+                string lastName = (string)customerData[1];
+                DateTime birthDate = Convert.ToDateTime(customerData[2]);
 
-        public static void ChangeSelectedProduct(DataGridView dataGridView, string[] texts)
-        {
-            if (dataGridView.Rows.Count != 0)
-                dataGridView.Rows[index].SetValues(texts);
+                //TODO: usuwanie zamowien z listy zamowien dla klientow z bazy danych
+                var getIndexFromList = CustomerCollection.ordersCollection.IndexOf
+                    (CustomerCollection.ordersCollection.Single
+                    (x => x.productName == productName && x.quantity == quantity && x.price == price
+                   && x.customer.firstName == firstName && x.customer.lastName == lastName && x.customer.birthDate == birthDate));
+
+                CustomerCollection.ordersCollection[getIndexFromList].productName = productData[0];
+                CustomerCollection.ordersCollection[getIndexFromList].quantity = Convert.ToInt32(productData[1]);
+                CustomerCollection.ordersCollection[getIndexFromList].price = Convert.ToSingle(productData[2]);
+
+                UpdateDataGridView(customerData, dataGridView);
+            }
         }
+        //public static void DeleteSelectedProduct(DataGridView dataGridView, object[] v)
+        //{
+        //    if (dataGridView.Rows.Count != 0)
+        //        dataGridView.Rows.Remove(dataGridView.Rows[index]);
+        //}
+
+        //public static void ChangeSelectedProduct(DataGridView dataGridView, string[] texts)
+        //{
+        //    if (dataGridView.Rows.Count != 0)
+        //        dataGridView.Rows[index].SetValues(texts);
+        //}
 
         public static void UpdateDataGridView(object[] customerData, DataGridView dataGridView1)
         {
@@ -130,7 +185,8 @@ namespace DataBaseDemo.LibraryHelper
                                client.birthDate == Convert.ToDateTime(customerData[2]))
                                select client.customerID).Single();
 
-
+            //creating lists of order for certain client (clients taken from database has valid clientID property and clients made
+            // during runtime has only customer (first,last and birthday) valid value and clientID equals to 0)
             var listOfOrders = CustomerCollection.ordersCollection.
                 Where(
                 x =>
@@ -140,11 +196,7 @@ namespace DataBaseDemo.LibraryHelper
                 ((x.customer.firstName == (string)customerData[0] && x.customer.lastName == (string)customerData[1] && x.customer.birthDate == Convert.ToDateTime(customerData[2]))
                 && x.ClientID == 0)
                 ).ToList();
-            //var listOfOrders = DataBaseService.listOfOrders.
-            //    Where(
-            //    x => x.Customer.FirstName == (string)customerData[0] && x.Customer.LastName == (string)customerData[1]
-            //    && x.Customer.BirthDate == Convert.ToDateTime(customerData[2])
-            //    ).ToList();
+
             foreach (var order in listOfOrders)
             {
                 string[] parameters = new string[] { order.productName, order.quantity.ToString(), order.price.ToString() };

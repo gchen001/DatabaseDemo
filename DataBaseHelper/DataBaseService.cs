@@ -29,14 +29,28 @@ namespace DataBaseHelper
                     object Cell2 = item.Cells[1].Value;
                     object Cell3 = item.Cells[2].Value;
 
+                    string productName = (string)Cell1;
+                    int quantity = Convert.ToInt32(Cell2);
+                    float price = Convert.ToSingle(Cell3);
 
-                    context.Orders.Add(new Orders()
+                    //Check for same Orders if there arent, add new order to database
+                    var isThereSameOrder = context.Orders
+                        .Any(x => x.ProductName == productName &&
+                        x.Quantity == quantity &&
+                        x.Price == price
+                        );
+
+                    if(!isThereSameOrder)
                     {
-                        ProductName = Cell1.ToString(),
-                        Quantity = Convert.ToInt32(Cell2),
-                        Price = Convert.ToSingle(Cell3),
-                        ClientID = customerID
-                    });
+                        context.Orders.Add(new Orders()
+                        {
+                            ProductName = Cell1.ToString(),
+                            Quantity = Convert.ToInt32(Cell2),
+                            Price = Convert.ToSingle(Cell3),
+                            ClientID = customerID
+                        });
+                    }
+                    
                 }
 
                 context.SaveChanges();
@@ -71,9 +85,11 @@ namespace DataBaseHelper
                 string lastName = (string)clientData[1];
                 DateTime birthDate = Convert.ToDateTime(clientData[2]);
 
+                //check for the same customers
                 var isSameCustomerInDataBase = context.Customer
                     .Any(x => x.FirstName == firstName && x.LastName == lastName
                     && x.BirthDate == birthDate);
+
                 if (!isSameCustomerInDataBase)
                 {
                     context.Customer.Add(new Customer()
